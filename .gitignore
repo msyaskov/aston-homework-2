@@ -3,3 +3,5 @@ jenkins
 dbdata
 Install.md
 .idea
+.gradle
+gradle
