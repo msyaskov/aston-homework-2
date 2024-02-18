@@ -3,5 +3,7 @@ jenkins
 dbdata
 Install.md
 .idea
-.gradle
+.gradle/
 gradle
+tomcat
+tomcat.Dockerfile

@@ -1,14 +1,22 @@
 version: '3.8'
 services:
-  tomcat:
+  tomcat_dev:
     image: tomcat:latest
     ports:
-      - "80:8080"
+      - "8081:8080"
       - "5005:5005" # debug
     volumes:
       - "./build/libs:/usr/local/tomcat/webapps"
     environment:
       JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+  tomcat:
+    build:
+      context: .
+      dockerfile: tomcat.Dockerfile
+    ports:
+      - "80:8080"
+    volumes:
+      - "./tomcat/webapps:/usr/local/tomcat/webapps"
   db:
     image: postgres:latest
     ports:
@@ -25,6 +33,5 @@ services:
     user: root
     ports:
       - "8080:8080"
-      - "50000:50000"
     volumes:
       - "./jenkins:/var/jenkins_home"
