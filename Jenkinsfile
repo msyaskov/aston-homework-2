@@ -4,7 +4,7 @@ pipeline {
 
     stages {
         stage('Test') {
-            script {
+            steps {
                 try {
                     sh './gradlew clean test --no-daemon' //run a gradle task
                 } finally {
