@@ -3,21 +3,29 @@ pipeline {
     agent any
 
     stages {
-        stage('Test') {
+        stage('Compile') {
             steps {
+                echo '--| Compile'
                 sh 'chmod +x ./gradlew'
-                sh './gradlew clean test --no-daemon' //run a gradle task
-                junit '**/build/test-results/test/*.xml' //make the junit test results available in any case (success & failure)
+                sh './gradlew clean classes --no-daemon'
             }
         }
-        stage('Build') {
+        stage('Test') {
             steps {
-                echo 'Building..'
+                echo '--| Test'
+                sh './gradlew test --no-daemon'
+                junit '**/build/test-results/test/*.xml'
+            }
+        }
+        stage('Build WAR') {
+            steps {
+                echo '--| Build WAR'
+                sh './gradlew war --no-daemon'
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                echo '--| Deploy on Tomcat'
             }
         }
     }
