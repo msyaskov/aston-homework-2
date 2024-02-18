@@ -25,20 +25,21 @@ pipeline {
         }
         stage('Deploy') {
             steps([$class: 'BapSshPromotionPublisherPlugin']) {
-            sshPublisher(
-                continueOnError: false, failOnError: true,
-                publishers: [
-                    sshPublisherDesc(
-                        configName: "tomcat",
-                        verbose: true,
-                        transfers: [
-                            sshTransfer(execCommand: "mv ./aston-hw2.war /usr/local/tomcat/webapps/aston-hw2.war"),
-                            sshTransfer(sourceFiles: "./build/libs/aston-hw2.war",)
-                        ]
-                    )
-                ]
-            )
-        }
+                sh 'mv build/libs/aston-hw2.war aston.war'
+                sshPublisher(
+                    continueOnError: false, failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "tomcat",
+                            verbose: true,
+                            transfers: [
+                                // sshTransfer(execCommand: "mv /home/deployer/aston-hw2.war /usr/local/tomcat/webapps/aston-hw2.war"),
+                                sshTransfer(sourceFiles: "aston.war",)
+                            ]
+                        )
+                    ]
+                )
+            }
         }
     }
 }
