@@ -106,20 +106,20 @@ public class JdbcGroupRepository extends JdbcAbstractRepository<Group, Integer> 
                     return null;
                 }
 
-                return rs.getInt(SQLNamespace.Group.KEY_ID);
+                return rs.getInt(1);
             }
         });
 
         return groupId != null ? findById(groupId) : null;
     }
 
-    private Integer getIntGeneratedKey(Statement s, String columnLabel) throws SQLException {
+    private Integer getIntGeneratedKey(Statement s) throws SQLException {
         ResultSet rs = s.getGeneratedKeys();
         if (!rs.next()) {
             return null;
         }
 
-        return rs.getInt(columnLabel);
+        return rs.getInt(1);
     }
 
     private Group insert(final Group group) {
@@ -141,21 +141,17 @@ public class JdbcGroupRepository extends JdbcAbstractRepository<Group, Integer> 
             }
 
             final Collection<Student> students = group.getStudents();
-            try (PreparedStatement insertStudentPS = connection.prepareStatement(SQLNamespace.Query.INSERT_STUDENT, Statement.RETURN_GENERATED_KEYS);
-                 PreparedStatement updateStudentPS = connection.prepareStatement(SQLNamespace.Query.UPDATE_STUDENT)) {
-
-                for (Student student : students) {
-                    if (student == null) {
-                        throw new IllegalStateException("One of the students is null");
-                    }
-
-                    if (student.getId() == null) {
-                        insertStudent(connection, student, group.getId());
-                    } else {
-                        updateStudent(connection, student, group.getId());
-                    }
-                    student.setGroup(group);
+            for (Student student : students) {
+                if (student == null) {
+                    throw new IllegalStateException("One of the students is null");
                 }
+
+                if (student.getId() == null) {
+                    insertStudent(connection, student, group.getId());
+                } else {
+                    updateStudent(connection, student, group.getId());
+                }
+                student.setGroup(group);
             }
 
             return group;
@@ -170,7 +166,7 @@ public class JdbcGroupRepository extends JdbcAbstractRepository<Group, Integer> 
             ps.setInt(4, groupId);
             ps.executeUpdate();
 
-            curator.setId(getIntGeneratedKey(ps, SQLNamespace.Curator.KEY_ID));
+            curator.setId(getIntGeneratedKey(ps));
         }
     }
 
@@ -180,7 +176,7 @@ public class JdbcGroupRepository extends JdbcAbstractRepository<Group, Integer> 
             ps.setDate(2, Date.valueOf(group.getGraduationDate()));
             ps.executeUpdate();
 
-            group.setId(getIntGeneratedKey(ps, SQLNamespace.Group.KEY_ID));
+            group.setId(getIntGeneratedKey(ps));
         }
     }
 
@@ -195,27 +191,27 @@ public class JdbcGroupRepository extends JdbcAbstractRepository<Group, Integer> 
             }
             ps.executeUpdate();
 
-            student.setId(getIntGeneratedKey(ps, SQLNamespace.Group.KEY_ID));
+            student.setId(getIntGeneratedKey(ps));
         }
     }
 
     private Curator readCurator(ResultSet rs) throws SQLException {
         try {
-            rs.findColumn(SQLNamespace.Curator.FULL_KEY_ID);
+            rs.findColumn(SQLNamespace.Curator.KEY_ID);
         } catch (SQLException ignored) {
             return null;
         }
 
-        int curatorId = rs.getInt(SQLNamespace.Curator.FULL_KEY_ID);
+        int curatorId = rs.getInt(SQLNamespace.Curator.KEY_ID);
         if (rs.wasNull()) {
             return null;
         }
 
         Curator curator = new Curator();
         curator.setId(curatorId);
-        curator.setName(rs.getString(SQLNamespace.Curator.FULL_KEY_NAME));
-        curator.setEmail(rs.getString(SQLNamespace.Curator.FULL_KEY_EMAIL));
-        curator.setExperience(rs.getInt(SQLNamespace.Curator.FULL_KEY_EXPERIENCE));
+        curator.setName(rs.getString(SQLNamespace.Curator.KEY_NAME));
+        curator.setEmail(rs.getString(SQLNamespace.Curator.KEY_EMAIL));
+        curator.setExperience(rs.getInt(SQLNamespace.Curator.KEY_EXPERIENCE));
 
         return curator;
     }

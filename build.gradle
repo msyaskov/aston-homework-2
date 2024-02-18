@@ -19,9 +19,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.1'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1'
 
-//    testCompileOnly 'org.projectlombok:lombok:1.18.30'
-//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
-
     testImplementation 'com.h2database:h2:2.2.224'
     testImplementation 'org.springframework.boot:spring-boot-starter-web:3.2.2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.2'

@@ -82,7 +82,7 @@ public class JdbcCuratorRepository extends JdbcAbstractRepository<Curator, Integ
 
                     try (ResultSet rs = ps.getGeneratedKeys()) {
                         if (rs.next()) {
-                            curator.setId(rs.getInt(SQLNamespace.Student.KEY_ID));
+                            curator.setId(rs.getInt(1));
                         }
                     }
                 }

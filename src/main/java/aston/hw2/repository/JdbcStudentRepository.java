@@ -87,7 +87,7 @@ public class JdbcStudentRepository extends JdbcAbstractRepository<Student, Integ
 
                     try (ResultSet rs = ps.getGeneratedKeys()) {
                         if (rs.next()) {
-                            student.setId(rs.getInt(SQLNamespace.Student.KEY_ID));
+                            student.setId(rs.getInt(1));
                         }
                     }
                 }
