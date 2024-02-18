@@ -29,7 +29,7 @@ pipeline {
                 continueOnError: false, failOnError: true,
                 publishers: [
                     sshPublisherDesc(
-                        configName: "kubernetes_master",
+                        configName: "tomcat",
                         verbose: true,
                         transfers: [
                             sshTransfer(execCommand: "/bin/rm -f /usr/local/tomcat/webapps/aston-hw2.war"),
