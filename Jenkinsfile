@@ -32,7 +32,7 @@ pipeline {
                         configName: "tomcat",
                         verbose: true,
                         transfers: [
-                            sshTransfer(execCommand: "/bin/rm -f /usr/local/tomcat/webapps/aston-hw2.war"),
+                            // sshTransfer(execCommand: "/bin/rm -f /usr/local/tomcat/webapps/aston-hw2.war"),
                             sshTransfer(sourceFiles: "./build/libs/aston-hw2.war",)
                         ]
                     )
