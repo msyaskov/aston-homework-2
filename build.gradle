@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'aston.hw2'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'org.postgresql:postgresql:42.7.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1'
+
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+
+    testImplementation 'com.h2database:h2:2.2.224'
+    // https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
+    testImplementation 'org.springframework.boot:spring-boot-starter-web:3.2.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.2'
+
+    testImplementation 'org.hibernate.orm:hibernate-core:6.4.4.Final'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+war {
+    archiveFileName = 'aston-hw2.war'
+}

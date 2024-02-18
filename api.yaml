@@ -1,0 +1,497 @@
+openapi: 3.0.3
+info:
+  title: Aston Homework 2
+  description: API для сервиса предоставляющего CRUD операции над студентами, их группами и кураторами групп.
+  version: 0.1.0
+servers:
+  - url: 'http://localhost:8080/aston-hw2'
+tags:
+  - name: "Groups"
+    description: CRUD операции над группами
+  - name: "Curators"
+    description: CRUD операции над кураторами
+  - name: "Students"
+    description: CRUD операции над студентами
+paths:
+  /groups:
+    get:
+      operationId: get.groups
+      summary: Получить все группы
+      description: Получить список всех групп
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Список всех групп
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+    post:
+      operationId: post.group
+      description: Создать группу
+      summary: Создать группу
+      tags:
+        - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupCandidate"
+      responses:
+        "201":
+          description: Созданная группа
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        "400":
+          description: Если неподходящий кандидат
+  /groups/{groupId}:
+    get:
+      operationId: get.group
+      summary: Получить группу
+      description: Получить группу по её идентификатору {groupId}
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Группа с указанным идентификатором
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        "404":
+          description: Если группа не найдена
+    put:
+      operationId: put.group
+      summary: Обновить группу
+      description: Обновить группу по её идентификатору {groupId}
+      tags:
+        - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupCandidate'
+      responses:
+        "200":
+          description: Обновленная группа
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        "400":
+          description: Если неподходящий кандидат
+        "404":
+          description: Если группа не найдена
+    delete:
+      operationId: delete.group
+      summary: Удалить группу
+      description: Удалить группу по её идентификатору {groupId}
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Если группа удалена
+        "404":
+          description: Если группа не найдена
+  /groups/{groupId}/curator:
+    get:
+      operationId: get.group.curator
+      summary: Получить куратора
+      description: Получить куратора группы по её идентификатору {groupId}
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Куратор группы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curator'
+        "204":
+          description: Если у группы нет куратора
+        "404":
+          description: Если группа не найдена
+    delete:
+      operationId: delete.group.curator
+      summary: Удалить связь с куратором
+      description: Удалить связь группы с куратором по её идентификатору {groupId}
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Связь удалена или её не было
+        "404":
+          description: Если группа не найдена
+  /groups/{groupId}/curator/{curatorId}:
+    put:
+      operationId: put.group.curator
+      summary: Создать связь с куратором
+      description: Создать связь группы с куратором по их идентификаторам {groupId} {curatorId}
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Если связь создана
+        "404":
+          description: Если группа или куратор не найдены
+  /groups/{groupId}/students:
+    get:
+      operationId: get.group.students
+      summary: Получить студентов
+      description: Получить список студентов связанных с группой по её идентификатору {groupId}
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Список студентов группы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "404":
+          description: Если группа не найдена
+  /groups/{groupId}/students/{studentId}:
+    put:
+      operationId: put.group.student
+      summary: Создать связь со студентом
+      description: Создать связь группы со студентом по их идентификаторам {groupId} {studentId}
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Если связь создана
+        "404":
+          description: Если группа или студент не найдены
+    delete:
+      operationId: delete.group.student
+      summary: Удалить связь со студентом
+      description: Удалить связь группы со студентом по их идентификатору {groupId} {studentId}
+      tags:
+        - Groups
+      responses:
+        "200":
+          description: Если связь удалена или её не было
+        "404":
+          description: Если группа или студенты не найдены
+  /curators:
+    get:
+      operationId: get.curators
+      summary: Получить кураторов
+      description: Получить список всех кураторов
+      tags:
+        - Curators
+      responses:
+        "200":
+          description: Список всех кураторов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Curator'
+    post:
+      operationId: post.curator
+      summary: Создать куратора
+      description: Создать куратора
+      tags:
+        - Curators
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuratorCandidate'
+      responses:
+        "201":
+          description: Созданный куратор
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curator'
+        "400":
+          description: Если неподходящий кандидат
+  /curators/{curatorId}:
+    get:
+      operationId: get.curator
+      summary: Получить куратора
+      description: Получить куратора по его идентификатору
+      tags:
+        - Curators
+      responses:
+        "200":
+          description: Куратор
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curator'
+        "404":
+          description: Если куратор не найден
+    put:
+      operationId: put.curator
+      summary: Обновить куратора
+      description: Обновить куратора по его идентификатору
+      tags:
+        - Curators
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuratorCandidate'
+      responses:
+        "200":
+          description: Обновленный куратор
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curator'
+        "400":
+          description: Если неподходящий кандидат
+        "404":
+          description: Если куратор не найден
+    delete:
+      operationId: delete.curator
+      summary: Удалить куратора
+      description: Удалить куратора по его идентификатору
+      tags:
+        - Curators
+      responses:
+        "200":
+          description: Если куратор удален
+        "404":
+          description: Если куратор не найден
+  /curators/{curatorId}/group:
+    get:
+      operationId: get.curator.group
+      summary: Получить группу
+      description: Получить группу куратора по его идентификатору {curatorId}
+      tags:
+        - Curators
+      responses:
+        "200":
+          description: Группа куратора
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curator'
+        "204":
+          description: Если у куратора нет группы
+        "404":
+          description: Если группа не найдена
+    delete:
+      operationId: delete.curator.group
+      summary: Удалить связь с группой
+      description: Удалить связь куратора с группой по его идентификатору {curatorId}
+      tags:
+        - Curators
+      responses:
+        "200":
+          description: Связь удалена или её не было
+        "404":
+          description: Если куратор не найден
+  /curators/{curatorId}/group/{groupId}:
+    put:
+      operationId: put.curator.group
+      summary: Создать связь с группой
+      description: Создать связь куратора с группой по их идентификаторам {curatorId} {groupId}
+      tags:
+        - Curators
+      responses:
+        "200":
+          description: Если связь создана
+        "404":
+          description: Если куратор или группа не найдены
+  /students:
+    get:
+      operationId: get.students
+      summary: Получить студентов
+      description: Получить список всех студентов
+      tags:
+        - Students
+      responses:
+        "200":
+          description: Список всех студентов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+    post:
+      operationId: post.student
+      summary: Создать студента
+      description: Создать студента
+      tags:
+        - Students
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentCandidate'
+      responses:
+        "201":
+          description: Созданный студент
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "400":
+          description: Если неподходящий кандидат
+  /students/{studentId}:
+    get:
+      operationId: get.student
+      summary: Получить студента
+      description: Получить студента по его идентификатору
+      tags:
+        - Students
+      responses:
+        "200":
+          description: Студент
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "404":
+          description: Если студент не найден
+    put:
+      operationId: put.student
+      summary: Обновить студента
+      description: Обновить студента по его идентификатору
+      tags:
+        - Students
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentCandidate'
+      responses:
+        "200":
+          description: Обновленный студент
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        "400":
+          description: Если неподходящий кандидат
+        "404":
+          description: Если студент не найден
+    delete:
+      operationId: delete.student
+      summary: Удалить студента
+      description: Удалить студента по его идентификатору
+      tags:
+        - Students
+      responses:
+        "200":
+          description: Если студент удален
+        "404":
+          description: Если студент не найден
+  /students/{studentId}/group:
+    get:
+      operationId: get.student.group
+      summary: Получить группу
+      description: Получить группу студента по его идентификатору
+      tags:
+        - Students
+      responses:
+        "200":
+          description: Группа студента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Curator'
+        "204":
+          description: Если у студента нет группы
+        "404":
+          description: Если студент не найден
+    delete:
+      operationId: delete.student.group
+      summary: Удалить связь с группой
+      description: Удалить связь студента с группой по его идентификатору
+      tags:
+        - Students
+      responses:
+        "200":
+          description: Связь удалена или её не было
+        "404":
+          description: Если студент не найден
+  /students/{studentId}/group/{groupId}:
+    put:
+      operationId: put.student.group
+      summary: Создать связь с группой
+      description: Создать связь студента с группой по их идентификаторам
+      tags:
+        - Students
+      responses:
+        "200":
+          description: Если связь создана
+        "404":
+          description: Если студент или группа не найдены
+components:
+  schemas:
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        graduationDate:
+          type: string
+          format: date
+    GroupCandidate:
+      type: object
+      properties:
+        name:
+          type: string
+        graduationDate:
+          type: string
+          format: date
+    Curator:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        experience:
+          type: integer
+          format: int32
+    CuratorCandidate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        experience:
+          type: integer
+          format: int32
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: int32
+        name:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+    StudentCandidate:
+      type: object
+      properties:
+        name:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date

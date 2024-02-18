@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  tomcat:
+    image: tomcat:latest
+    ports:
+      - "80:8080"
+      - "5005:5005" # debug
+    volumes:
+      - "./build/libs:/usr/local/tomcat/webapps"
+    environment:
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - './dbdata:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'pass'
+      POSTGRES_DB: 'aston_hw2_db'
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+  jenkins:
+    image: jenkins/jenkins
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - "./jenkins:/var/jenkins_home"
