@@ -16,6 +16,6 @@ public class TestJenkinsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter writer = response.getWriter();
         writer.print("<p>Message for test jenkins</p>");
-//        writer.print("<p>Second message for test jenkins</p>");
+        writer.print("<p>Second message for test jenkins</p>");
     }
 }
