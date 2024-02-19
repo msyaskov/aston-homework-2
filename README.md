@@ -1,22 +1,27 @@
-Конечные точки:
-1. Группы:
-* POST /groups - создать группу.
-* GET /groups - получить все группы
-* GET /groups/:groupId - получить конкретную группу без связей со студентами
-* PUT /groups/:groupId - изменить информацию о группе
-* DELETE /groups/:groupId - удалить группу (студенты группы не удаляются)
+# Aston homework 2
 
-1. Студенты:
-* POST /students - создать студента.
-* GET /students - получить всех студентов.
-* GET /students/:sId - получить конкретного студента.
-* PUT /students/:sId - изменить информацию о студенте.
-* DELETE /students/:sId - удалить студента.
+## Задачи
+1. Сделать RESTful приложение с CRUD-операциями.
+2. Использовать сервлеты.
+3. Не использовать Spring и Hibernate в основной логике.
+4. Должны присутствовать следующие слои: servlet, service, repository, mapper, dto, entity.
+5. Покрыть логику unit-тестами (+ интеграционные).
+6. Разрешен Lombok.
+7. Должна быть реализация One-to-One и One-to-Many.
+8. В качестве базы данных использовать PostgreSQL.
+9. Руководствоваться принципами SOLID.
+10. Проверка через Postman.
+11. Реализовать автодеплой с помощью Jenkins.
 
-1. Отношения
-* GET /groups/:gId/students - студенты по группе
-* PUT /groups/:gId/students/:sId - назначение студента в группу
-* DELETE /groups/:gId/students/:sId - снять студента с группы
-* GET /students/:sId/groupDto - получить группу студента
-* PUT /students/:sId/groupDto/:gId - назначить студента в группу
-* DELETE /students/:sId/groupDto - удалить студента из группы
+## Описание
+Реализовано RESTful приложение. Описанное API по OpenAPI Specification находится в файле [api.yaml](./api.yaml).
+
+Для тестов использовалась база данных H2, Spring Boot для интеграционных тестов и Mockito для unit-тестов сервисов.
+
+Используется три сущности Curator, Group, Student. По сути своей они независимы, т.е. куратор и студент могут существовать без группы, а группа без них.
+* One-to-One: Curator to Group.
+* One-to-Mane: Group to Student.
+
+Демонстрация работы приложения через Postman: [Youtube](https://youtu.be/HgEfLrYhL7U)  
+Демонстрация работы автодеплоя с помощью Jenkins: [Youtube](https://youtu.be/ZXkxwd8fnTk)  
+Jenkins pipeline: [Jenkinsfile](./Jenkinsfile)
