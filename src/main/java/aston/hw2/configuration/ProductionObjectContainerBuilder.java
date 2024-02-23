@@ -12,6 +12,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.util.Objects;
 
+// Максим, контекст... моей почтение (тоном Гоблина)
+// Молодец, очень хорошо постарался
 public class ProductionObjectContainerBuilder extends AbstractObjectContainerBuilder {
 
     @Override

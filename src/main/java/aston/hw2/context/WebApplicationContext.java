@@ -24,7 +24,7 @@ public class WebApplicationContext implements ServletContextListener {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getObject(Class<T> clazz) {
+    public <T> T getObject(Class<T> clazz) { // а вот и реализация сервис локатора, как раз его же и обсуждали
         if (clazz == null) {
             throw new IllegalStateException("A clazz must not be null");
         }

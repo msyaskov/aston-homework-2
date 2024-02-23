@@ -31,12 +31,7 @@ public class DefaultStudentService implements StudentService {
     @Override
     public Student createStudentByCandidate(Student candidate) {
         checkCandidate(candidate);
-
-        Student student = new Student();
-        student.setName(candidate.getName());
-        student.setDateOfBirth(candidate.getDateOfBirth());
-
-        return studentRepository.save(student);
+        return studentRepository.save(Student.copy(candidate));
     }
 
     @Override

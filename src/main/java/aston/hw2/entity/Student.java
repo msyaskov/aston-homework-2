@@ -26,4 +26,11 @@ public class Student extends AbstractEntity {
         this.group = group;
     }
 
+    public static Student copy(Student candidate) {
+        Student student = new Student();
+        student.setName(candidate.getName());
+        student.setDateOfBirth(candidate.getDateOfBirth());
+        return student;
+    }
+
 }

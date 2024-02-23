@@ -29,11 +29,11 @@ public class JdbcCuratorRepository extends JdbcAbstractRepository<Curator, Integ
         return useConnection(connection -> {
             final Stream.Builder<Curator> streamBuilder = Stream.builder();
 
-            try (PreparedStatement ps = connection.prepareStatement(SQLNamespace.Query.SELECT_CURATORS_BY_NULL_GROUP_ID)) {
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        streamBuilder.add(readCurator(rs));
-                    }
+            try (PreparedStatement ps = connection.prepareStatement(SQLNamespace.Query.SELECT_CURATORS_BY_NULL_GROUP_ID);
+                 ResultSet rs = ps.executeQuery() // можно так, чтобы вложенность уменьшить
+            ) {
+                while (rs.next()) {
+                    streamBuilder.add(readCurator(rs));
                 }
             }
 
